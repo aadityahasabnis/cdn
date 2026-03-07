@@ -1,21 +1,26 @@
 {
-	"name": "cloudflare-workers-openapi",
-	"version": "0.0.1",
+	"name": "cdn",
+	"version": "1.0.0",
 	"private": true,
+	"description": "Cloudflare-based media hosting backend API",
 	"scripts": {
-		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
 		"start": "wrangler dev",
-		"cf-typegen": "wrangler types"
+		"types": "wrangler types",
+		"typecheck": "tsc --noEmit",
+		"db:init": "wrangler d1 execute media-db --file=schema.sql",
+		"db:init:local": "wrangler d1 execute media-db --local --file=schema.sql",
+		"db:query": "wrangler d1 execute media-db"
 	},
 	"dependencies": {
-		"chanfana": "^2.6.3",
 		"hono": "^4.6.20",
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240405.0",
 		"@types/node": "^22.13.0",
-		"@types/service-worker-mock": "^2.0.4",
+		"typescript": "^5.9.3",
 		"wrangler": "^4.71.0"
 	}
 }

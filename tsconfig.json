@@ -22,7 +22,6 @@
 		"types": [
 			"./worker-configuration.d.ts",
 			"@types/node",
-			"@types/service-worker-mock",
 			"node"
 		]
 	},
