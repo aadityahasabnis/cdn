@@ -570,11 +570,11 @@ export const testUIHTML = `<!DOCTYPE html>
             <div class="config-grid">
                 <div class="form-group">
                     <label class="form-label">API Base URL</label>
-                    <input type="text" id="apiBaseUrl" class="form-input" value="">
+                    <input type="text" id="apiBaseUrl" class="form-input" value="" placeholder="https://your-worker.workers.dev">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">API Key</label>
-                    <input type="text" id="apiKey" class="form-input" value="test-key-123">
+                    <label class="form-label">API Key (for upload/delete) <small style="color: var(--error);">*Required for production</small></label>
+                    <input type="password" id="apiKey" class="form-input" value="" placeholder="Enter your ADMIN_API_KEY">
                 </div>
             </div>
         </div>
@@ -699,7 +699,12 @@ export const testUIHTML = `<!DOCTYPE html>
         
         // API Helpers
         function getBaseUrl() { return document.getElementById('apiBaseUrl').value; }
-        function getApiKey() { return document.getElementById('apiKey').value; }
+        function getApiKey() { 
+            const key = document.getElementById('apiKey').value;
+            // Save to localStorage for convenience
+            if (key) localStorage.setItem('media_api_key', key);
+            return key;
+        }
         
         // Toast notifications
         function showToast(message) {
@@ -753,6 +758,12 @@ export const testUIHTML = `<!DOCTYPE html>
                 return;
             }
             
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert('⚠️ Please set your API key in the "API Key" field above!');
+                return;
+            }
+            
             const formData = new FormData();
             formData.append('file', selectedFile);
             
@@ -767,14 +778,14 @@ export const testUIHTML = `<!DOCTYPE html>
             try {
                 const response = await fetch(\`\${getBaseUrl()}/api/media/upload\`, {
                     method: 'POST',
-                    headers: { 'x-api-key': getApiKey() },
+                    headers: { 'x-api-key': apiKey },
                     body: formData
                 });
                 
                 const data = await response.json();
                 
                 if (response.ok) {
-                    showToast('File uploaded successfully!');
+                    showToast('✅ File uploaded successfully!');
                     fileInput.value = '';
                     selectedFile = null;
                     document.getElementById('selectedFile').classList.remove('active');
@@ -782,10 +793,10 @@ export const testUIHTML = `<!DOCTYPE html>
                     document.getElementById('uploadTags').value = '';
                     loadGallery();
                 } else {
-                    alert('Upload failed: ' + (data.error || 'Unknown error'));
+                    alert('❌ Upload failed: ' + (data.error || 'Unknown error') + '\\n\\nStatus: ' + response.status + '\\n\\nCheck your API key!');
                 }
             } catch (error) {
-                alert('Upload error: ' + error.message);
+                alert('❌ Upload error: ' + error.message);
             }
         }
         
@@ -891,12 +902,11 @@ export const testUIHTML = `<!DOCTYPE html>
                 const response = await fetch(\`\${getBaseUrl()}/api/media/stats\`);
                 const data = await response.json();
                 
-                if (response.ok && data.stats) {
-                    currentStats = data.stats;
-                    document.getElementById('statTotal').textContent = data.stats.total_files || 0;
-                    document.getElementById('statImages').textContent = data.stats.by_type?.image || 0;
-                    document.getElementById('statVideos').textContent = data.stats.by_type?.video || 0;
-                    const totalMB = ((data.stats.total_size || 0) / 1024 / 1024).toFixed(1);
+                if (response.ok && data.success) {
+                    document.getElementById('statTotal').textContent = data.total || 0;
+                    document.getElementById('statImages').textContent = data.images || 0;
+                    document.getElementById('statVideos').textContent = data.videos || 0;
+                    const totalMB = ((data.totalSize || 0) / 1024 / 1024).toFixed(1);
                     document.getElementById('statSize').textContent = totalMB + ' MB';
                 }
             } catch (error) {
@@ -944,7 +954,7 @@ export const testUIHTML = `<!DOCTYPE html>
                     \` : ''}
                     <div class="detail-item">
                         <div class="detail-label">Uploaded</div>
-                        <div class="detail-value">\${new Date(file.created_at).toLocaleString()}</div>
+                        <div class="detail-value">\${new Date(file.uploaded_at).toLocaleString()}</div>
                     </div>
                     <div class="detail-item" style="grid-column: 1 / -1;">
                         <div class="detail-label">Public URL</div>
@@ -971,16 +981,31 @@ export const testUIHTML = `<!DOCTYPE html>
         }
         
         async function deleteFile(fileKey) {
+            const apiKey = getApiKey();
+            const baseUrl = getBaseUrl();
+            const isLocalhost = baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1');
+            
+            if (!apiKey) {
+                alert('⚠️ Please set your API key in the "API Key" field above!');
+                return;
+            }
+            
+            // Only warn about test-key-123 on production, not localhost
+            if (!isLocalhost && apiKey === 'test-key-123') {
+                alert('⚠️ Please set your production API key in the "API Key" field above!\\n\\nThe default "test-key-123" only works for local development.');
+                return;
+            }
+            
             if (!confirm(\`Are you sure you want to delete this file?\\n\\n\${fileKey}\`)) {
                 return;
             }
             
             try {
-                const response = await fetch(\`\${getBaseUrl()}/api/media/delete\`, {
+                const response = await fetch(\`\${baseUrl}/api/media/delete\`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': getApiKey()
+                        'x-api-key': apiKey
                     },
                     body: JSON.stringify({ file_key: fileKey })
                 });
@@ -992,10 +1017,10 @@ export const testUIHTML = `<!DOCTYPE html>
                     loadGallery(currentPage);
                     closeModal();
                 } else {
-                    alert('Delete failed: ' + (data.error || 'Unknown error'));
+                    alert('❌ Delete failed: ' + (data.error || 'Unknown error') + '\\n\\nStatus: ' + response.status + '\\n\\nCheck your API key!');
                 }
             } catch (error) {
-                alert('Delete error: ' + error.message);
+                alert('❌ Delete error: ' + error.message);
             }
         }
         
@@ -1009,7 +1034,18 @@ export const testUIHTML = `<!DOCTYPE html>
         
         // Initialize
         window.addEventListener('load', () => {
-            document.getElementById('apiBaseUrl').value = window.location.origin;
+            const baseUrl = window.location.origin;
+            document.getElementById('apiBaseUrl').value = baseUrl;
+            
+            // Restore saved API key from localStorage
+            const savedKey = localStorage.getItem('media_api_key');
+            if (savedKey) {
+                document.getElementById('apiKey').value = savedKey;
+            } else if (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
+                // Only auto-fill test key for local development
+                document.getElementById('apiKey').value = 'test-key-123';
+            }
+            
             loadGallery();
         });
         

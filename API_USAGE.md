@@ -4,9 +4,12 @@ Simple CDN service for uploading and managing images, videos, and files. Built o
 
 ## Base URL
 
+**Production:**
 ```
-https://your-worker.workers.dev
+https://cdn.aadityahasabnis.workers.dev
 ```
+
+**Your Worker URL:** Check `wrangler.jsonc` or deployment output for your actual worker URL
 
 ## Authentication
 
@@ -15,6 +18,17 @@ Add your API key to requests that require auth:
 ```bash
 x-api-key: your-admin-api-key-here
 ```
+
+### Getting Your API Key
+
+**For Production:**
+1. Go to Cloudflare Dashboard → Workers & Pages
+2. Click your worker → Settings → Variables
+3. Find or set `ADMIN_API_KEY` secret
+4. Use this key in the UI and API requests
+
+**For Local Development:**
+- API key is `test-key-123` (defined in `.dev.vars`)
 
 ## Quick Start
 

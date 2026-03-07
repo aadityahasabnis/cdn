@@ -6,6 +6,20 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Hono](https://img.shields.io/badge/Hono-4.0-green)](https://hono.dev/)
 
+## ⚡ Can't Delete Files? → [Read This](./HOW_TO_DELETE.md)
+## 📁 Files Not Showing in Gallery? → [Fixed!](./GALLERY_BUG_FIX.md)
+
+## 🚀 Quick Links
+
+- **[Setup Guide](./SETUP.md)** - Get started in 5 minutes
+- **[API Usage](./API_USAGE.md)** - Integration examples for your project
+- **[Troubleshooting](./TROUBLESHOOTING.md)** - Common issues and solutions
+
+## Live Demo
+
+**Admin UI:** https://cdn.aadityahasabnis.workers.dev/  
+**API Endpoint:** https://cdn.aadityahasabnis.workers.dev/api  
+
 ## Features
 
 ### Core Functionality

@@ -15,9 +15,9 @@ export const CACHE = {
 	CDN_MAX_AGE_SECONDS: 31_536_000,
 	GALLERY_PREFIX: 'gallery',
 	COMMON_PAGES: [1, 2, 3, 4, 5] as const,
-	COMMON_LIMITS: [10, 20, 25, 50, 100] as const,
+	COMMON_LIMITS: [10, 12, 20, 24, 25, 48, 50, 100] as const,
 	INVALIDATION_PAGES: [1, 2, 3, 4, 5] as const,
-	INVALIDATION_LIMITS: [10, 20, 25, 50, 100] as const,
+	INVALIDATION_LIMITS: [10, 12, 20, 24, 25, 48, 50, 100] as const,
 } as const;
 
 export const RATE_LIMIT = {
