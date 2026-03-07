@@ -30,7 +30,7 @@ export const handleList = async (c: Context<HonoEnv>): Promise<Response> => {
 	const { page, limit } = validatePagination(pageParam ? parseInt(pageParam, 10) : undefined, limitParam ? parseInt(limitParam, 10) : undefined);
 
 	const queryParams: ListQueryParams = { type, folder, page, limit };
-	const cacheKey = buildCacheKey(queryParams);
+	const cacheKey = await buildCacheKey(queryParams, c.env.MEDIA_CACHE);
 	const cached = await getCached(c.env.MEDIA_CACHE, cacheKey, logger);
 
 	if (cached) {

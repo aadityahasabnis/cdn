@@ -7,7 +7,7 @@ import type { Env, HonoEnv, DeleteResponse } from '../types';
 import { jsonOk } from '../utils/response';
 import { deleteObject } from '../services/r2';
 import { deleteMedia, deleteMediaById, getMediaByKey, getMediaById } from '../services/database';
-import { invalidateAllCache } from '../services/cache';
+import { invalidateCache } from '../services/cache';
 import { ValidationError, NotFoundError } from '../lib/errors';
 
 // ===========================================================================
@@ -36,7 +36,7 @@ export const handleDelete = async (c: Context<HonoEnv>): Promise<Response> => {
 	await deleteMedia(c.env.DB, file_key, logger);
 	logger.info('File deleted successfully', { file_key });
 
-	c.executionCtx.waitUntil(invalidateAllCache(c.env.MEDIA_CACHE, mediaRecord.folder, logger));
+	c.executionCtx.waitUntil(invalidateCache(c.env.MEDIA_CACHE, logger));
 
 	const response: DeleteResponse = { success: true, file_key, message: 'File deleted successfully' };
 	return jsonOk(response);
@@ -65,7 +65,7 @@ export const handleDeleteById = async (c: Context<HonoEnv>): Promise<Response> =
 	await deleteMediaById(c.env.DB, id, logger);
 	logger.info('File deleted successfully', { id, file_key: mediaRecord.file_key });
 
-	c.executionCtx.waitUntil(invalidateAllCache(c.env.MEDIA_CACHE, mediaRecord.folder, logger));
+	c.executionCtx.waitUntil(invalidateCache(c.env.MEDIA_CACHE, logger));
 
 	const response: DeleteResponse = { success: true, file_key: mediaRecord.file_key, message: 'File deleted successfully' };
 	return jsonOk(response);

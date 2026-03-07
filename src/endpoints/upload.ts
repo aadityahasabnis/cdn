@@ -9,7 +9,7 @@ import { validateMimeType, validateFileSize, determineFileType, parseTags, valid
 import { jsonOk } from '../utils/response';
 import { uploadObject } from '../services/r2';
 import { insertMedia } from '../services/database';
-import { invalidateAllCache } from '../services/cache';
+import { invalidateCache } from '../services/cache';
 import { FILE_SIZE } from '../constants';
 import { ValidationError, StorageError, DatabaseError } from '../lib/errors';
 
@@ -63,7 +63,7 @@ export const handleUpload = async (c: Context<HonoEnv>): Promise<Response> => {
 	}
 
 	logger.info('Upload completed successfully', { fileKey, publicUrl, size: file.size });
-	c.executionCtx.waitUntil(invalidateAllCache(c.env.MEDIA_CACHE, folder, logger));
+	c.executionCtx.waitUntil(invalidateCache(c.env.MEDIA_CACHE, logger));
 
 	const response: UploadResponse = { success: true, file_key: fileKey, public_url: publicUrl, mime_type: mimeType, size: file.size };
 	return jsonOk(response);
