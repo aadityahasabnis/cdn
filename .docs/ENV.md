@@ -38,7 +38,7 @@ The Media Service uses environment variables for configuration and Cloudflare bi
 **Local Setup:**
 ```bash
 # Add to .dev.vars
-ADMIN_API_KEY=test-key-123
+ADMIN_API_KEY=your-admin-api-key
 ```
 
 **Production Setup:**
@@ -396,7 +396,7 @@ nano .dev.vars
 
 ```bash
 # .dev.vars
-ADMIN_API_KEY=test-key-123
+ADMIN_API_KEY=your-admin-api-key
 CDN_BASE_URL=http://127.0.0.1:8787/cdn
 ```
 

@@ -112,7 +112,7 @@ https://cdn.aadityahasabnis.workers.dev/api/media/list?folder=test&type=image
 → Make sure you entered the correct `ADMIN_API_KEY` in the UI
 
 ### ❌ Upload fails with 401
-→ Check your API key is correct (not the default `test-key-123`)
+→ Check your API key matches configured `ADMIN_API_KEY`
 
 ### ❌ Gallery shows 0 files but I uploaded
 → Clear cache: `POST /api/media/cache/clear` with API key header

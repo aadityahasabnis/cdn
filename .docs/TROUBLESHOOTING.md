@@ -7,7 +7,7 @@ Clicking "Delete" button shows error: "Authentication failed" or "Invalid API ke
 
 ### Solution
 1. **Check your API key:**
-   - The default `test-key-123` only works for LOCAL development
+   - Ensure entered key matches configured `ADMIN_API_KEY`
    - For production, you need your actual `ADMIN_API_KEY`
 
 2. **Find your production API key:**
@@ -145,7 +145,7 @@ npm install
 **3. Check .dev.vars file exists:**
 ```bash
 # Should contain:
-ADMIN_API_KEY=test-key-123
+ADMIN_API_KEY=your-admin-api-key
 CDN_BASE_URL=http://127.0.0.1:8787/cdn
 ```
 

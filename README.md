@@ -87,7 +87,7 @@ npx wrangler secret put ADMIN_API_KEY
 1. Update `wrangler.jsonc` with your resource IDs (from create commands above)
 2. Create `.dev.vars` for local development:
    ```
-   ADMIN_API_KEY=test-key-123
+   ADMIN_API_KEY=your-admin-api-key
    ```
 3. Configure CDN_BASE_URL in `wrangler.jsonc` (see [ENV.md](./ENV.md))
 

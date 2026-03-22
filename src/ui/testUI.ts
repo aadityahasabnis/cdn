@@ -227,6 +227,18 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
             margin-bottom: 1rem;
         }
 
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-head .section-title {
+            margin-bottom: 0;
+        }
+
         .form-group { margin-bottom: 0; }
 
         .form-label {
@@ -477,6 +489,11 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
 
         .btn-secondary:hover { background: #f8fafc; }
 
+        .btn-refresh {
+            white-space: nowrap;
+            min-width: 118px;
+        }
+
         .btn-danger { background: var(--error); color: #fff; }
         .btn-danger:hover { filter: brightness(1.05); }
 
@@ -694,6 +711,11 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
             .detail-item { grid-template-columns: 1fr; gap: 0.3rem; }
             .container { padding: 0 1rem; }
             .container { padding-top: 1rem; padding-bottom: 1rem; }
+
+            .section-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -721,7 +743,7 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
                         <span class="tooltip" id="apiBaseUrlTooltip"></span>
                     </div>
                     <div class="header-title-row">
-                        <h1>Aaditya's CDN Admin Pane</h1>
+                        <h1>Aaditya's CDN Admin Panel</h1>
                     </div>
                 </div>
                 <div class="header-controls">
@@ -774,7 +796,12 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
             </div>
 
             <div class="section">
-                <h2 class="section-title">Media Gallery</h2>
+                <div class="section-head">
+                    <h2 class="section-title">Media Gallery</h2>
+                    <button id="refreshGalleryBtn" class="btn btn-secondary btn-refresh" onclick="refreshGallery()">
+                        ↻ Refresh
+                    </button>
+                </div>
 
                 <div class="gallery-stats" id="galleryStats">
                     <div class="stat-item">
@@ -977,6 +1004,20 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
             if (currentPage < totalPages) loadGallery(currentPage + 1);
         }
 
+        async function refreshGallery() {
+            const btn = document.getElementById('refreshGalleryBtn');
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '↻ Refreshing...';
+            try {
+                await loadGallery(currentPage);
+                showToast('Gallery refreshed.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+            }
+        }
+
         async function loadStats() {
             try {
                 const response = await fetch(getBaseUrl() + '/api/media/stats');
@@ -1111,15 +1152,9 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
         async function deleteFile(fileKey) {
             const apiKey = getApiKey();
             const baseUrl = getBaseUrl();
-            const isLocalhost = baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1');
 
             if (!apiKey) {
                 alert('Please add your Admin API Key in the header.');
-                return;
-            }
-
-            if (!isLocalhost && apiKey === 'test-key-123') {
-                alert('Please use your production API key for delete actions.');
                 return;
             }
 
@@ -1159,8 +1194,6 @@ export const renderTestUIHTML = (uiAccessPassword: string): string => `<!DOCTYPE
             const savedKey = localStorage.getItem('media_api_key');
             if (savedKey) {
                 document.getElementById('apiKey').value = savedKey;
-            } else if (BASE_URL.includes('localhost') || BASE_URL.includes('127.0.0.1')) {
-                document.getElementById('apiKey').value = 'test-key-123';
             }
 
             const uploadArea = document.getElementById('uploadArea');

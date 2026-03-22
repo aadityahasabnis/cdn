@@ -4,8 +4,8 @@
 
 When you click the **🗑️ Delete** button in the gallery, it fails because:
 
-❌ **The default API key `test-key-123` only works for local development**  
-❌ **For production, you need your actual `ADMIN_API_KEY`**
+❌ **Delete fails if the entered key does not match configured `ADMIN_API_KEY`**  
+❌ **You must use the actual `ADMIN_API_KEY` for the current environment**
 
 ## Solution (2 Steps)
 
@@ -26,9 +26,7 @@ sk_prod_a8f2b9d4c6e1f3a7b5c2d8e9f1a3b6c4
 ### Step 2: Use the Key in the UI
 
 1. Visit: **https://cdn.aadityahasabnis.workers.dev/**
-2. At the top, you'll see two fields:
-   - **API Base URL** (auto-filled)
-   - **API Key** (empty or shows default)
+2. At the top, enter your **Admin API Key**
 3. Enter the API key you just created in Step 1
 4. The key will be saved in your browser
 5. Now try deleting - it should work! ✅
@@ -64,14 +62,14 @@ After entering your API key:
 The media service has two modes:
 
 **Local Development** (`npm run dev`)
-- Uses `test-key-123` from `.dev.vars` file
+- Uses `ADMIN_API_KEY` from `.dev.vars`
 - Works on `http://127.0.0.1:8787`
 
 **Production** (deployed worker)
 - Uses `ADMIN_API_KEY` secret from Cloudflare
 - Works on `https://cdn.aadityahasabnis.workers.dev`
 
-When you deploy to production but use the UI without setting your key, it fails because `test-key-123` is not the production key.
+When key in UI does not match the environment `ADMIN_API_KEY`, authentication fails.
 
 ## Alternative: Use cURL
 

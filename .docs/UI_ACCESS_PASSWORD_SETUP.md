@@ -71,8 +71,8 @@ Use `.dev.vars` (git-ignored) for local secrets.
 Example `.dev.vars`:
 
 ```bash
-ADMIN_API_KEY=test-key-123
-UI_ACCESS_PASSWORD=Admin@321
+ADMIN_API_KEY=your-admin-api-key
+UI_ACCESS_PASSWORD=ui-access-password
 ```
 
 Run local:

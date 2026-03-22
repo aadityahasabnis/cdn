@@ -200,7 +200,7 @@ npx wrangler types
 ```bash
 # Upload test file
 curl -X POST http://127.0.0.1:8787/api/media/upload \
-  -H "x-api-key: test-key-123" \
+  -H "x-api-key: YOUR_ADMIN_API_KEY" \
   -F "file=@test-image.jpg" \
   -F "folder=test" \
   -F "tags=test,demo"
@@ -213,7 +213,7 @@ curl http://127.0.0.1:8787/api/media/stats
 
 # Delete file
 curl -X DELETE http://127.0.0.1:8787/api/media/delete \
-  -H "x-api-key: test-key-123" \
+  -H "x-api-key: YOUR_ADMIN_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"file_key":"images/test/1234567890-abc123-test.jpg"}'
 ```
@@ -307,7 +307,7 @@ npx wrangler metrics
 ```bash
 # Via API
 curl -X POST http://127.0.0.1:8787/api/media/cache/clear \
-  -H "x-api-key: test-key-123"
+  -H "x-api-key: YOUR_ADMIN_API_KEY"
 ```
 
 **Purpose:** Invalidate all cached gallery results  

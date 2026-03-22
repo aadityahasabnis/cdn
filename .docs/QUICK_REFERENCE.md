@@ -161,7 +161,7 @@ npx wrangler tail  # View logs
 ```bash
 npm run dev  # Start local server
 # Visit: http://127.0.0.1:8787
-# API Key: test-key-123 (auto-works locally)
+# API Key: set to your local ADMIN_API_KEY in .dev.vars
 ```
 
 ---

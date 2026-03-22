@@ -6,7 +6,6 @@
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy",
-		"start": "wrangler dev",
 		"types": "wrangler types",
 		"typecheck": "tsc --noEmit",
 		"db:init": "wrangler d1 execute media-db --file=schema.sql",

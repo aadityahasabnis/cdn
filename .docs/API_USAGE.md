@@ -28,7 +28,7 @@ x-api-key: your-admin-api-key-here
 4. Use this key in the UI and API requests
 
 **For Local Development:**
-- API key is `test-key-123` (defined in `.dev.vars`)
+- API key is your `ADMIN_API_KEY` (defined in `.dev.vars` or Cloudflare secret)
 
 ## Quick Start
 

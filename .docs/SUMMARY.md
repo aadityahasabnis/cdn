@@ -9,11 +9,11 @@ You changed the worker name and can't delete files from the Media Gallery UI.
 ### 1. **Better Error Messages** ✅
 - UI now shows clear warnings if API key is wrong
 - Alerts show the actual error message and HTTP status
-- Warns when using default `test-key-123` on production
+- Uses only configured `ADMIN_API_KEY` for auth checks
 
 ### 2. **Smarter API Key Handling** ✅
 - API key is now saved to browser localStorage
-- Auto-fills `test-key-123` ONLY for localhost
+- No hardcoded API key auto-fill
 - Production requires you to enter your real key
 - Shows password field for security
 

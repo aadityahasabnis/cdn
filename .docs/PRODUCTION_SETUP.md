@@ -88,7 +88,7 @@ curl -X POST https://cdn.aadityahasabnis.workers.dev/api/media/upload \
 
 **URL:** http://127.0.0.1:8787  
 **Database:** Local D1 (stored on your computer)  
-**API Key:** `test-key-123` (from `.dev.vars` file)  
+**API Key:** `ADMIN_API_KEY` from Cloudflare secret  
 **Purpose:** Testing without affecting production  
 
 **Files uploaded here:**
