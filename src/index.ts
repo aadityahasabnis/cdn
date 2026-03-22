@@ -13,7 +13,7 @@ import { handleList } from './endpoints/listMedia';
 import { handleDelete, handleDeleteById } from './endpoints/deleteMedia';
 import { getStats, getFolders } from './services/database';
 import { jsonOk, Errors, handleOptions } from './utils/response';
-import { testUIHTML } from './ui/testUI';
+import { renderTestUIHTML } from './ui/testUI';
 import { validateEnvironment } from './config';
 import { AppError, formatErrorResponse, DatabaseError, StorageError } from './lib/errors';
 import { logger } from './lib/logger';
@@ -42,7 +42,10 @@ app.use('*', rateLimitMiddleware);
 // ===========================================================================
 
 app.get('/health', (c) => jsonOk({ success: true, status: 'healthy', service: 'media-service', timestamp: new Date().toISOString() }));
-app.get('/', (c) => c.html(testUIHTML));
+app.get('/', (c) => {
+	const uiAccessPassword = c.env.UI_ACCESS_PASSWORD || c.env.ADMIN_API_KEY;
+	return c.html(renderTestUIHTML(uiAccessPassword));
+});
 app.get('/api', (c) => jsonOk({ success: true, name: 'Media Service API', version: '1.0.0', description: 'Cloudflare-based media hosting backend', endpoints: { upload: 'POST /api/media/upload', list: 'GET /api/media/list', delete: 'DELETE /api/media/delete', deleteById: 'DELETE /api/media/:id', stats: 'GET /api/media/stats', folders: 'GET /api/media/folders', health: 'GET /health' }, documentation: { upload: { method: 'POST', path: '/api/media/upload', auth: 'Required (x-api-key header)', contentType: 'multipart/form-data', fields: { file: 'File (required) - The file to upload', folder: 'String (optional) - Folder name (default: root)', type: 'String (optional) - image|video|file (auto-detected)', tags: 'String (optional) - Comma-separated tags' } }, list: { method: 'GET', path: '/api/media/list', auth: 'Not required', params: { type: 'Filter by type (image|video|file)', folder: 'Filter by folder name', limit: 'Items per page (1-100, default: 50)', page: 'Page number (default: 1)' } }, delete: { method: 'DELETE', path: '/api/media/delete', auth: 'Required (x-api-key header)', body: '{ "file_key": "path/to/file" }' } } }));
 
 // ===========================================================================

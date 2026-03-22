@@ -19,6 +19,7 @@ export interface Env {
 	RATE_LIMIT_PER_MIN: string;
 	ENVIRONMENT: string;
 	ADMIN_API_KEY: string;
+	UI_ACCESS_PASSWORD?: string;
 }
 
 export type AppContext = Context<{ Bindings: Env; Variables: { isAuthenticated?: boolean } }>;
