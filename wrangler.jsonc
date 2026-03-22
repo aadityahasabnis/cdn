@@ -14,8 +14,7 @@
 		"CDN_BASE_URL": "https://cdn.aadityahasabnis.workers.dev/cdn",
 		"MAX_UPLOAD_BYTES": "104857600",
 		"RATE_LIMIT_PER_MIN": "30",
-		"ENVIRONMENT": "production",
-		"UI_ACCESS_PASSWORD": "changed-in-production"
+		"ENVIRONMENT": "production"
 	},
 	// R2 Object Storage - for storing media files
 	// NOTE: Enable R2 in Cloudflare Dashboard before deploying
