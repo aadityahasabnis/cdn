@@ -32,12 +32,11 @@ export const sanitizeFilename = (filename: string): string => {
 };
 
 export const generateFileKey = (originalFilename: string, folder: string, fileType: FileType): string => {
-	const timestamp = Date.now();
 	const nanoid = generateNanoId();
 	const sanitized = sanitizeFilename(originalFilename);
 	const typeFolder = getTypeFolder(fileType);
 	const sanitizedFolder = folder.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || FOLDER.DEFAULT_NAME;
-	return `${typeFolder}/${sanitizedFolder}/${timestamp}-${nanoid}-${sanitized}`;
+	return `${typeFolder}/${sanitizedFolder}/${sanitized}-${nanoid}`;
 };
 
 export const buildPublicUrl = (cdnBaseUrl: string, fileKey: string): string =>
